@@ -10,12 +10,10 @@ export const getAirport = async (icao) => {
     
     // Get vatsim data URL
     vatsimDataUrl = await (await axios.get(vatsimStatusUrl)).data.data.v3[0]
-    console.log(`vatsim url: ${vatsimDataUrl}`)
     // Get vatsim data
     const vatsimData = await (await axios.get(vatsimDataUrl)).data
-    console.log(`${vatsimData}`)
     // Search controllers[]
-    let results = 'Airport is offline'
+    let results = `${icao} is offline`
     for (const controller of vatsimData.controllers) {
         if(controller.callsign.includes(icao)) {
             results = `${icao} is online`

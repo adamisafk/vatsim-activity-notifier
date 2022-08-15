@@ -5,6 +5,20 @@ import { Routes } from 'discord-api-types/v9'
 
 import { getAirport } from './functions/getAirport'
 
+const commonOptions = [
+  {
+    name: 'airport',
+    description: 'ICAO of an airport',
+    type: 3,
+    required: true
+  },
+  {
+    name: 'service',
+    description: 'GND, TWR etc.',
+    type: 3,
+    required: false
+  }
+]
 const commands = [
   {
     name: 'ping',
@@ -13,20 +27,22 @@ const commands = [
   {
     name: 'status',
     description: 'Get current status of an airport',
-    options: [
-      {
-        name: 'airport',
-        description: 'ICAO of an airport',
-        type: 3,
-        required: true
-      },
-      {
-        name: 'service',
-        description: 'GND, TWR etc.',
-        type: 3,
-        required: false
-      }
-    ]
+    options: commonOptions
+  },
+  {
+    name: 'watch',
+    description: 'Begin watching an airport. Recieve a notification when it becomes online',
+    options: commonOptions
+  },
+  {
+    name: 'unwatch',
+    description: 'Stop watching an airport. Stop recieving notifications for that airport.',
+    options: commonOptions
+  },
+  {
+    name: 'unsubscribe',
+    description: 'Remove all airports from watchlist. Your discord tag will be deleted too.',
+    options: commonOptions
   }
 ]
 const rest = new REST({ version: '9' }).setToken(params.DISCORD_BOT_TOKEN)
@@ -70,6 +86,39 @@ api.post('/discord', api.rawBody, verifyKeyMiddleware(params.DISCORD_PUBLIC_KEY)
         return reply('Pong')
       }
       case 'status': {
+        if (message.data.options) {
+          const icao = message.data.options[0].value
+          try {
+            const res = await getAirport(icao.toUpperCase())
+            return reply(res)
+          } catch (e) {
+            return reply(e.message)
+          }
+        }
+      }
+      case 'watch': {
+        if (message.data.options) {
+          const icao = message.data.options[0].value
+          try {
+            const res = await getAirport(icao.toUpperCase())
+            return reply(res)
+          } catch (e) {
+            return reply(e.message)
+          }
+        }
+      }
+      case 'unwatch': {
+        if (message.data.options) {
+          const icao = message.data.options[0].value
+          try {
+            const res = await getAirport(icao.toUpperCase())
+            return reply(res)
+          } catch (e) {
+            return reply(e.message)
+          }
+        }
+      }
+      case 'unsubscribe': {
         if (message.data.options) {
           const icao = message.data.options[0].value
           try {
