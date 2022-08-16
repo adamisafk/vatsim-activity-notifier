@@ -8,7 +8,8 @@ import { addAirport } from './functions/addAirport'
 import { removeAirport } from './functions/removeAirport'
 import { removeUser } from './functions/removeUser'
 import { listAirports } from './functions/listAirports'
-import { taskCheckAirports } from './functions/taskCheckAirports'
+import { taskCheckAirports } from './functions/tasks/taskCheckAirports'
+import { taskNotifyUsers } from './functions/tasks/taskNotifyUsers'
 
 const commonOptions = [
   {
@@ -176,16 +177,19 @@ api.post('/discord', api.rawBody, verifyKeyMiddleware(params.DISCORD_PUBLIC_KEY)
         }
       }
       case 'test': {
-        const res = await taskCheckAirports()
-        return reply(res)
       }
     }
   }
   return res.sendStatus(200)
 })
 
-// schedule.every("1 minutes", () => {
-//   taskCheckAirports().then((usersToNotify) => {
-    
-//   })
-// });
+
+
+const startTask = async () => {
+  
+}
+	
+schedule.every("1 minute", { timeout: 300 }, () => {
+  console.log("scheduled task now")
+  await taskCheckAirports()
+});

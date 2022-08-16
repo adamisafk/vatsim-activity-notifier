@@ -2,7 +2,7 @@ import { getVatsimData } from "./util/getVatsimData"
 
 export const getAirport = async (icao) => {
     // Get vatsim data
-    const vatsimData = getVatsimData()
+    const vatsimData = await getVatsimData()
 
     // Search controllers[]
     let results = `${icao} is offline!`

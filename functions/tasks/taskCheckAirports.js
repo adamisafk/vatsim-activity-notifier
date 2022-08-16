@@ -1,6 +1,6 @@
 import { data, storage } from "@serverless/cloud";
 
-import { getVatsimData } from "./util/getVatsimData"
+import { getVatsimData } from "../util/getVatsimData"
 
 export const taskCheckAirports = async () => {
     let airportsToSearch = []

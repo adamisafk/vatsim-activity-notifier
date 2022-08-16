@@ -12,7 +12,7 @@
     "@serverless/cloud": "^2.10.13"
   },
   "serverless": {
-    "app": "discord-bot",
+    "app": "vatsim-activity-notifier",
     "org": "adamisafk"
   },
   "dependencies": {
