@@ -72,26 +72,6 @@ api.get('/', async (req, res) => {
   }
 })
 
-const getUser = async (userId) => {
-  try {
-    const user = await rest.get(Routes.user(req.params.userId))
-    return res.send(user)
-  } catch (e) {
-    console.error(e)
-    return res.sendStatus(500)
-  }
-}
-
-api.post('/notify', async (req, res) => {
-  try {
-    await rest.post(Routes.channelMessages('1008704715787346002'), {})
-    return res.send()
-  } catch (e) {
-    console.error(e)
-    return res.sendStatus(500)
-  }
-})
-
 const sendResponse = (res) => (content) => {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -177,6 +157,8 @@ api.post('/discord', api.rawBody, verifyKeyMiddleware(params.DISCORD_PUBLIC_KEY)
         }
       }
       case 'test': {
+        const data = await taskCheckAirports()
+        console.log(data)
       }
     }
   }
@@ -184,12 +166,7 @@ api.post('/discord', api.rawBody, verifyKeyMiddleware(params.DISCORD_PUBLIC_KEY)
 })
 
 
-
-const startTask = async () => {
-  
-}
-	
-schedule.every("1 minute", { timeout: 300 }, () => {
-  console.log("scheduled task now")
-  await taskCheckAirports()
+schedule.every("15 minute", { timeout: 300000 }, async () => {
+  const usersToNotify = await taskCheckAirports()
+  taskNotifyUsers(usersToNotify)
 });
